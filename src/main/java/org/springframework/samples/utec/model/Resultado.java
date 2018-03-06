@@ -45,6 +45,11 @@ public class Resultado extends BaseEntity {
     @JsonIgnore
     private Alumno alumno;
 	
+	@Column(name = "expdate")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    private LocalDate expdate;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "resultado", fetch = FetchType.EAGER)
     private Set<Valores> valores;
 
@@ -70,6 +75,14 @@ public class Resultado extends BaseEntity {
 
 	public void setDate(LocalDate date) {
 		this.date = date;
+	}
+
+	public LocalDate getExpdate() {
+		return expdate;
+	}
+
+	public void setExpdate(LocalDate expdate) {
+		this.expdate = expdate;
 	}
 
 	public Alumno getAlumno() {

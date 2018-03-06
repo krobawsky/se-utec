@@ -1,10 +1,15 @@
 package org.springframework.samples.utec.web.api;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.joda.time.LocalDate;
 import org.spring.framework.samples.utec.api.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,87 +69,104 @@ private final Logger logger = Logger.getLogger(UserResource.class);
 		 
 		 if( utecService.findAlumnoByLastNameC(alumno.getLastName()) == null) {
 			 
-			 logger.info("Nombre de apellido invalido..procesando con nombre de Grupo...");
+			logger.info("Nombre de apellido invalido..procesando con nombre de Grupo...");
 			 
-			 Grupo var_group = utecService.findByGroupName(groupOalumno);
+			Grupo var_group = utecService.findByGroupName(groupOalumno);
 			 
-			 if (var_group.getName().equals(groupOalumno)){
-				 logger.info("Nombre del grupo correcto...");
+			if (var_group.getName().equals(groupOalumno)){
+				logger.info("Nombre del grupo correcto...");
 				 
-				 ArrayList<String> correos = new ArrayList<String>(); 
-				 ArrayList<Integer> ides = new ArrayList<Integer>();
+				ArrayList<String> correos = new ArrayList<String>(); 
+				ArrayList<Integer> ides = new ArrayList<Integer>();
 				 
-				 correos = utecService.findByGroupByLastNameCorreo(var_group.getName());
-				 ides = utecService.findByGroupByIdCorreo(var_group.getName());
+				correos = utecService.findByGroupByLastNameCorreo(var_group.getName());
+				ides = utecService.findByGroupByIdCorreo(var_group.getName());
 				 
-				 int size=correos.size();
+				int size=correos.size();
 				 
-				 logger.info("cantidadeeee..."+String.valueOf(correos.get(0)));
-				 logger.info("cantidad..."+size);
+				logger.info("cantidadeeee..."+String.valueOf(correos.get(0)));
+				logger.info("cantidad..."+size);
 				 
-				 for( int i = 0 ; i < correos.size() ; i++ ){
-					  System.out.println( correos.get( i ));
+				for( int i = 0 ; i < correos.size() ; i++ ){
+					 System.out.println( correos.get( i ));
 					  
-					  Alumno alm = this.utecService.findAlumnoById(ides.get(i));
-					  String nombres = alm.getFirstName()+" "+alm.getLastName();
-					  String username, clave;
-					  username = alm.getCodigo();
-					  clave = alm.getPassword();
+					 Alumno alm = this.utecService.findAlumnoById(ides.get(i));
+					 String nombres = alm.getFirstName()+" "+alm.getLastName();
+					 String username, clave;
+					 username = alm.getCodigo();
+					 clave = alm.getPassword();
 					  
-					  logger.info("imprimiendo el nombre alumno del grupo..."+nombres);
-					  logger.info("imprimiendo los correos del grupo..."+correos.get(i));
+					 logger.info("imprimiendo el nombre alumno del grupo..."+nombres);
+					 logger.info("imprimiendo los correos del grupo..."+correos.get(i));
 					  
-			   this.dataService.sendEmail(correos.get(i), nombres, asunto, texto, username, clave, link, "1"); 
+					 this.dataService.sendEmail(correos.get(i), nombres, asunto, texto, username, clave, link, "1"); 
 			  
-					}
+				}
 				 
-				 for (int i = 0; i < ides.size(); i++){
+				for (int i = 0; i < ides.size(); i++){
 					 logger.info("imprimiendo los ID de los alumnos..."+ides.get(i));
-					 			 
+					 
+					 SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+					 String formatted = df.format(new Date());
+					 LocalDate localDate = LocalDate.parse(formatted);
+					 logger.info(localDate);
+					 
 					 Resultado result = new Resultado();
 					 Resultado resulta = new Resultado();
 					 resulta.setId(null);
 					 resulta.setDate(null);
 					 resulta.setDescripcion("Prueba asignada...");
+					 resulta.setExpdate(localDate);
 					 resulta.setTest(alumno.getCarrera());
 					 
 					 Alumno alm = this.utecService.findAlumnoById(ides.get(i));
 					 alm.addResultado(result);
 				
-				save(result,  resulta);
+					 save(result,  resulta);
 				}
-				   student = this.utecService.findAlumnoById(ides.get(1));
-		 }
+				student = this.utecService.findAlumnoById(ides.get(1));
+			 }
 	
 		 }else {
-		 var_alumno = utecService.findAlumnoByLastNameC(alumno.getLastName());
+			var_alumno = utecService.findAlumnoByLastNameC(alumno.getLastName());
 		 
-		 if(var_alumno.getLastName().equals(alumno.getLastName())) {
-						 logger.info("Apellido correcto...");
-						 String nombres = var_alumno.getFirstName()+" "+var_alumno.getLastName();
-						 String correo_alumno = var_alumno.getCorreo();
+			if(var_alumno.getLastName().equals(alumno.getLastName())) {
+				logger.info("Apellido correcto...");
+				String nombres = var_alumno.getFirstName()+" "+var_alumno.getLastName();
+				String correo_alumno = var_alumno.getCorreo();
 						 
-						 logger.info("imprimiendo el nombre alumno del grupo..."+nombres);
+				logger.info("imprimiendo el nombre alumno del grupo..."+nombres);
 						 			 		
-			this.dataService.sendEmail(correo_alumno, nombres, asunto, texto, var_alumno.getCodigo(), var_alumno.getPassword(), link, "1"); 
-			
-						 Resultado result = new Resultado();
-						 Resultado resulta = new Resultado();
-						 resulta.setId(null);
-						 resulta.setDate(null);
-						 resulta.setDescripcion("Prueba asignada...");
-						 resulta.setTest(alumno.getCarrera());
-						 
-						 Alumno alm = this.utecService.findAlumnoById(var_alumno.getId());
-						 alm.addResultado(result);
-						 
-						 save(result,  resulta);
-						 
-						 student = this.utecService.findAlumnoByLastNameC(alumno.getLastName());
+				this.dataService.sendEmail(correo_alumno, nombres, asunto, texto, var_alumno.getCodigo(), var_alumno.getPassword(), link, "1"); 
+				
+				//Get current date time
+		        LocalDateTime now = LocalDateTime.now();
+		        
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		        String formatDateTime = now.format(formatter);
+
+				logger.info(formatDateTime);
+				LocalDate localDate = LocalDate.parse(formatDateTime);
+				LocalDate expdate = localDate.plusDays(30);
+				
+				Resultado result = new Resultado();
+				Resultado resulta = new Resultado();
+				resulta.setId(null);
+				resulta.setDate(null);
+				resulta.setDescripcion("Prueba asignada...");
+				resulta.setExpdate(expdate);
+				resulta.setTest(alumno.getCarrera());
+					 
+				Alumno alm = this.utecService.findAlumnoById(var_alumno.getId());
+				alm.addResultado(result);
+				
+				save(result,  resulta);
+					 
+				student = this.utecService.findAlumnoByLastNameC(alumno.getLastName());
 						
-			 			}
-		 }
-		 logger.info("----------Menasaje enviado");
+			}
+		}
+		logger.info("----------Menasaje enviado");
 		return student;
 		
 	}
@@ -154,6 +176,7 @@ private final Logger logger = Logger.getLogger(UserResource.class);
 		result.setTest(resulta.getTest());
 		result.setDescripcion(resulta.getDescripcion());
 		result.setDate(resulta.getDate());
+		result.setExpdate(resulta.getExpdate());
 		result.setId(resulta.getId());
 		
 		utecService.saveResultado(result);
@@ -180,126 +203,125 @@ private final Logger logger = Logger.getLogger(UserResource.class);
 		
 		this.dataService.sendEmail(correo, nombres, asunto, texto, username, password, link, "2"); 
 			
-		 logger.info("----------Menasaje para el psicologo enviado");
+		logger.info("----------Menasaje para el psicologo enviado");
 		return user;
 	}
 	
 	///test de recordatorio
 	
-		@RequestMapping(value = "/emailtestpendiente/{typetest}", method = RequestMethod.POST)
-		public Alumno sendTestPendiente(@PathVariable("typetest") String typetest) {
+	@RequestMapping(value = "/emailtestpendiente/{typetest}", method = RequestMethod.POST)
+	public Alumno sendTestPendiente(@PathVariable("typetest") String typetest) {
 			
-			 logger.info("imprimiendo el typetest del react..."+typetest);
+		logger.info("imprimiendo el typetest del react..."+typetest);
 			
-			Alumno student = new Alumno();
-			Test test = new Test();
-			student = null;
+		Alumno student = new Alumno();
+		Test test = new Test();
+		student = null;
 			 
-			if (typetest.equals("TestE")) {
+		if (typetest.equals("TestE")) {
 			test.setName("Test del Estres");
-			
+				
 			logger.info("imprimiendo el typetest del spring ..."+test.getName());
-			
+				
 			ArrayList<Integer> ides = new ArrayList<Integer>();
-		
+			
 			ides = this.utecService.findAlumnosIdByTest(test.getName());
-			
+				
 			logger.info("imprimiendo la cantidad del array id ..."+ides.size());
-			
+				
 			for( int i = 0 ; i < ides.size() ; i++ ){
-				  System.out.println( ides.get( i ));
-				  
-				  logger.info("imprimiendo el id..."+ides.get(i));
-				  
-				  Alumno a = this.utecService.findAlumnoById(ides.get(i));
-				  
-				  String correo = a.getCorreo();
-				  String nombres = a.getFirstName()+" "+a.getLastName();
-				  String username = a.getCodigo();
-				  String password = a.getPassword();
-				  logger.info("imprimiendo el correo..."+correo);
-				  logger.info("imprimiendo el nombres..."+nombres);
-				
-				  String asunto = "Recordatorio del "+test.getName();
-				  String texto  = null;
-				  
-				  this.dataService.sendEmail(correo, nombres, asunto, texto, username, password, link, "1"); 
-				  logger.info("----------Menasaje enviado");
-				  student = this.utecService.findAlumnoById(ides.get(1));
-				}
-			
-			
-			} else if (typetest.equals("TestM")) {
-				 test.setName("Test de Millon");
-				
-				logger.info("imprimiendo el typetest del spring ..."+test.getName());
-				
-				ArrayList<Integer> ides = new ArrayList<Integer>();
-			
-				ides = this.utecService.findAlumnosIdByTest(test.getName());
-				
-				logger.info("imprimiendo la cantidad del array id ..."+ides.size());
-				
-				for( int i = 0 ; i < ides.size() ; i++ ){
-					  System.out.println( ides.get( i ));
+				System.out.println( ides.get( i ));
 					  
-					  logger.info("imprimiendo el id..."+ides.get(i));
+				logger.info("imprimiendo el id..."+ides.get(i));
 					  
-					  Alumno a = this.utecService.findAlumnoById(ides.get(i));
+				Alumno a = this.utecService.findAlumnoById(ides.get(i));
 					  
-					  String correo = a.getCorreo();
-					  String nombres = a.getFirstName()+" "+a.getLastName();
-					  String username = a.getCodigo();
-					  String password = a.getPassword();
-					  logger.info("imprimiendo el correo..."+correo);
-					  logger.info("imprimiendo el nombres..."+nombres);
+				String correo = a.getCorreo();
+				String nombres = a.getFirstName()+" "+a.getLastName();
+				String username = a.getCodigo();
+				String password = a.getPassword();
+				logger.info("imprimiendo el correo..."+correo);
+				logger.info("imprimiendo el nombres..."+nombres);
+					
+				String asunto = "Recordatorio del "+test.getName();
+				String texto  = null;
+					  
+				this.dataService.sendEmail(correo, nombres, asunto, texto, username, password, link, "1"); 
+				logger.info("----------Menasaje enviado");
+				student = this.utecService.findAlumnoById(ides.get(1));
+			}
+			
+		} else if (typetest.equals("TestM")) {
+			test.setName("Test de Millon");
+				
+			logger.info("imprimiendo el typetest del spring ..."+test.getName());
+				
+			ArrayList<Integer> ides = new ArrayList<Integer>();
+			
+			ides = this.utecService.findAlumnosIdByTest(test.getName());
+				
+			logger.info("imprimiendo la cantidad del array id ..."+ides.size());
+				
+			for( int i = 0 ; i < ides.size() ; i++ ){
+				System.out.println( ides.get( i ));
+					  
+				logger.info("imprimiendo el id..."+ides.get(i));
+				  
+				Alumno a = this.utecService.findAlumnoById(ides.get(i));
+					  
+				String correo = a.getCorreo();
+				String nombres = a.getFirstName()+" "+a.getLastName();
+				String username = a.getCodigo();
+				String password = a.getPassword();
+				logger.info("imprimiendo el correo..."+correo);
+				logger.info("imprimiendo el nombres..."+nombres);
 					 
-					  String asunto = "Recordatorio del "+test.getName();
-					  String texto  = null;
+				String asunto = "Recordatorio del "+test.getName();
+				String texto  = null;
 					  
-					  this.dataService.sendEmail(correo, nombres, asunto, texto, username, password, link, "1"); 
-					  logger.info("----------Menasaje enviado");
-					  student = this.utecService.findAlumnoById(ides.get(1));
-					}
+				this.dataService.sendEmail(correo, nombres, asunto, texto, username, password, link, "1"); 
+				logger.info("----------Menasaje enviado");
+				student = this.utecService.findAlumnoById(ides.get(1));
+			}
 				
 		   
-			} else if (typetest.equals("TestB")) {
-				test.setName("Test ICE Baron");
+		} else if (typetest.equals("TestB")) {
+			test.setName("Test ICE Baron");
 				
-				logger.info("imprimiendo el typetest del spring ..."+test.getName());
+			logger.info("imprimiendo el typetest del spring ..."+test.getName());
 				
-				ArrayList<Integer> ides = new ArrayList<Integer>();
+			ArrayList<Integer> ides = new ArrayList<Integer>();
 			
-				ides = this.utecService.findAlumnosIdByTest(test.getName());
+			ides = this.utecService.findAlumnosIdByTest(test.getName());
 				
-				logger.info("imprimiendo la cantidad del array id ..."+ides.size());
+			logger.info("imprimiendo la cantidad del array id ..."+ides.size());
 				
-				for( int i = 0 ; i < ides.size() ; i++ ){
-					  System.out.println( ides.get( i ));
+			for( int i = 0 ; i < ides.size() ; i++ ){
+				System.out.println( ides.get( i ));
 					  
-					  logger.info("imprimiendo el id..."+ides.get(i));
+				logger.info("imprimiendo el id..."+ides.get(i));
 					  
-					  Alumno a = this.utecService.findAlumnoById(ides.get(i));
+				Alumno a = this.utecService.findAlumnoById(ides.get(i));
 					  
-					  String correo = a.getCorreo();
-					  String nombres = a.getFirstName()+" "+a.getLastName();
-					  String username = a.getCodigo();
-					  String password = a.getPassword();
-					  logger.info("imprimiendo el correo..."+correo);
-					  logger.info("imprimiendo el nombres..."+nombres);
+				String correo = a.getCorreo();
+				String nombres = a.getFirstName()+" "+a.getLastName();
+				String username = a.getCodigo();
+				String password = a.getPassword();
+				logger.info("imprimiendo el correo..."+correo);
+				logger.info("imprimiendo el nombres..."+nombres);
+				  
+				String asunto = "Recordatorio del "+test.getName();
+				String texto  = null;
 					  
-					  String asunto = "Recordatorio del "+test.getName();
-					  String texto  = null;
-					  
-					  this.dataService.sendEmail(correo, nombres, asunto, texto, username, password, link, "1"); 
-					  logger.info("----------Menasaje enviado");
-					  student = this.utecService.findAlumnoById(ides.get(1));
-					} 
-			} else {
-				  logger.info("No paso nada");
-			}
-			  
-			return student; 
+				this.dataService.sendEmail(correo, nombres, asunto, texto, username, password, link, "1"); 
+				logger.info("----------Menasaje enviado");
+				student = this.utecService.findAlumnoById(ides.get(1));
+			} 
+			
+		} else {
+			logger.info("No paso nada");
+			
 		}
-	
+		return student; 
+	}
 }
