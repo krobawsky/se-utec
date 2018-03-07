@@ -3,8 +3,10 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import { url, submitForm } from '../../util';
 import { IAlumno, IDay, IError } from '../../types';
-
 import InputNumber from '../form/InputNumber';
+
+import SweetAlert from '../../../node_modules/sweetalert-react';
+import '../../../node_modules/sweetalert/dist/sweetalert.css';
 
 import { BarChart, Bar, AreaChart, Area} from '../../../node_modules/recharts';
 import { XAxis, YAxis, Tooltip, Cell, ResponsiveContainer } from '../../../node_modules/recharts';
@@ -24,6 +26,7 @@ interface IResultState {
   mensaje2?: string;
   mensaje3?: string;
   resultadoId?: string;
+  show?: boolean;
 }
 
 interface IResultadoRequest {
@@ -42,7 +45,8 @@ export default class Resultados extends React.Component<IPregProps, IResultState
       editableDay: Object.assign({}, props.initialDay),
       mensaje1: 'transparent-text',
       mensaje2: 'transparent-text',
-      mensaje3: 'transparent-text'
+      mensaje3: 'transparent-text',
+      show: false
     };
 
     this.onSubmit1 = this.onSubmit1.bind(this);
@@ -77,8 +81,7 @@ export default class Resultados extends React.Component<IPregProps, IResultState
       const url = 'api/tests/results/' + resultadoId;
         submitForm('PUT', url, resultRequest, (status, response) => {
           if (status === 204) {
-            alert('Fecha límite actualizado.');
-            window.location.reload();
+            this.setState({ show: true });
           } else {
             console.log('ERROR?!...', response);
             this.setState({ error: response });
@@ -105,8 +108,7 @@ export default class Resultados extends React.Component<IPregProps, IResultState
       const url = 'api/tests/results/' + resultadoId;
         submitForm('PUT', url, resultRequest, (status, response) => {
           if (status === 204) {
-            alert('Fecha límite actualizado.');
-            window.location.reload();
+            this.setState({ show: true });
           } else {
             console.log('ERROR?!...', response);
             this.setState({ error: response });
@@ -133,8 +135,7 @@ export default class Resultados extends React.Component<IPregProps, IResultState
       const url = 'api/tests/results/' + resultadoId;
         submitForm('PUT', url, resultRequest, (status, response) => {
           if (status === 204) {
-            alert('Fecha límite actualizado.');
-            window.location.reload();
+            this.setState({ show: true});
           } else {
             console.log('ERROR?!...', response);
             this.setState({ error: response });
@@ -337,6 +338,17 @@ export default class Resultados extends React.Component<IPregProps, IResultState
             )
           )
         ))}
+        <SweetAlert
+          show={this.state.show}
+          type='success'
+          title='Fecha límite actualizado'
+          onConfirm={ () => {
+            this.setState({
+              show: false
+            });
+            window.location.reload();
+          }}
+        />
       </section>
     );
   }

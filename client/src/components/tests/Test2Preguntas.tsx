@@ -3,6 +3,9 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import { url, submitForm } from '../../util';
 
+import SweetAlert from '../../../node_modules/sweetalert-react';
+import '../../../node_modules/sweetalert/dist/sweetalert.css';
+
 import { IError, IRouterContext, ITest, IPregunta, IPreguntaTipo, IAlternativa } from '../../types';
 import RadioInput2 from '../form/RadioInput2';
 
@@ -70,6 +73,7 @@ interface IResultState {
   resultsPP?: {};
   error?: IError;
   progress?: string;
+  show?: boolean;
 }
 
 interface IResultadoRequest {
@@ -126,7 +130,8 @@ export default class Pregunta extends React.Component<IPregProps, IResultState> 
       resultsCC: Object.assign({}, props.resultsCCProps),
       resultsPP: Object.assign({}, props.resultsPPProps),
       editableAlter: Object.assign({}, props.params ),
-      progress: 'progress scale-transition scale-out'
+      progress: 'progress scale-transition scale-out',
+      show: false
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -1537,7 +1542,7 @@ export default class Pregunta extends React.Component<IPregProps, IResultState> 
     const operadoresX2 = [0, 0, 5, 5, 4, 4, 3, 3, 2, 2, 1, 1, 0, 0, 0, -1, -1, -2, -2, -3, -3, -4, -4, -5, -5, -6];
 
     if ( Object.getOwnPropertyNames(resultsTotal).sort().length < Object.getOwnPropertyNames(editableAlter).sort().length ) {
-      alert( 'Debe contestar todas las preguntas!' );
+      this.setState({ show: true });
     } else {
       this.test();
 
@@ -2763,6 +2768,15 @@ export default class Pregunta extends React.Component<IPregProps, IResultState> 
             </form>
             <br/><br/><br/>
         </div>
+        <SweetAlert
+          show={this.state.show}
+          type='error'
+          title='Debe responder todas las preguntas'
+          onConfirm={ () => {
+            this.setState({ show: false });
+          }}
+        />
       </div>
     );
   }
+}

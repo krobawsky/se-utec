@@ -2,6 +2,10 @@ import * as React from 'react';
 
 import { IRouter, Link } from 'react-router';
 import { url, submitForm } from '../../util';
+
+import SweetAlert from '../../../node_modules/sweetalert-react';
+import '../../../node_modules/sweetalert/dist/sweetalert.css';
+
 import RadioB from '../form/RadioB';
 import Input from '../form/Input';
 
@@ -20,6 +24,8 @@ interface IAlumnoEditorState {
   error?: IError;
   mensaje?: string;
   progress?: string;
+  show?: boolean;
+  show2?: boolean;
 };
 
 
@@ -41,7 +47,9 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
     this.state = {
       alumno: Object.assign({}, props.initialEmail),
       mensaje: 'transparent-text',
-      progress: 'progress scale-transition scale-out'
+      progress: 'progress scale-transition scale-out',
+      show: false,
+      show2: false
     };
   }
 
@@ -51,7 +59,7 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
     const { alumno } = this.state;
     console.log(alumno);
 
-    if ( alumno.lastName === '' || alumno.lastName === null ) {
+    if ( alumno.lastName === '' || alumno.lastName === null || alumno.carrera === '' || alumno.firstName === '' || alumno.firstName === '') {
       this.alerta();
     } else {
       this.test();
@@ -59,8 +67,7 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
       submitForm(alumno.isNew ? 'POST' : 'PUT', url, alumno, (status, response) => {
         if (status === 200 || status === 201) {
           const newAlumno = response as IAlumno;
-          alert('Mensaje enviado satisfactoriamente.');
-          window.location.reload();
+          this.setState({ show: true });
         } else {
           console.log('ERROR?!...', response);
           this.setState({ error: response });
@@ -79,7 +86,7 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
     this.setState ({
       mensaje: 'white-text'
     });
-    alert('Ingrese el apellido de un alumno o grupo válido');
+    this.setState({ show2: true });
   }
 
   test  = () => {
@@ -122,7 +129,7 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
                       <div className='col s12'>
                         Para:
                         <div className='input-field col12'>
-                       <Input object={alumno} error={error}  label='' name='lastName' onChange={this.onInputChange} />
+                          <Input object={alumno} error={error}  label='' name='lastName' onChange={this.onInputChange} />
                           <b className={this.state.mensaje}>Ingrese el apellido de un alumno o grupo válido</b>
                         </div>
                       </div>
@@ -133,6 +140,7 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
                         <div className='col s12'>
                         <div className='input-field col s12'>
                           <RadioB object={alumno} error={error} name={name} options={tip} onChange={this.onInputChange} />
+                          <b className={this.state.mensaje}>Seleccione un test</b>
                         </div>
                       </div>
                     </div>
@@ -142,8 +150,9 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
                       <div className='col s12'>
                         Asunto:
                         <div className='input-field inline'>
-                        <Input object={alumno} error={error}  label='' name='firstName' onChange={this.onInputChange} />
-                         </div>
+                          <Input object={alumno} error={error}  label='' name='firstName' onChange={this.onInputChange} />
+                          <b className={this.state.mensaje}>Ingrese un asunto</b>
+                        </div>
                       </div>
                    </div>
                    <div className='col s12'>
@@ -165,6 +174,24 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
           </div>
         </div>
      </div>
+        <SweetAlert
+          show={this.state.show}
+          type='success'
+          title='Test Enviado'
+          onConfirm={ () => {
+            this.setState({ show: false });
+            window.location.reload();
+          }}
+        />
+        <SweetAlert
+          show={this.state.show2}
+          type='error'
+          title='Campos incompletos'
+          text='Debe completar los campos de apellido/grupo, asunto y seleccionar un test.'
+          onConfirm={ () => {
+            this.setState({ show2: false });
+          }}
+        />
       </span>
     );
   }

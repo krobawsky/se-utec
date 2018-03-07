@@ -3,6 +3,9 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import { url, submitForm } from '../../util';
 
+import SweetAlert from '../../../node_modules/sweetalert-react';
+import '../../../node_modules/sweetalert/dist/sweetalert.css';
+
 import { IError, IRouterContext, ITest, IPregunta, IAlternativa } from '../../types';
 import RadioInput3 from '../form/RadioInput3';
 
@@ -55,6 +58,7 @@ interface IResultState {
   resultsG?: {};
   error?: IError;
   progress?: string;
+  show?: boolean;
 }
 
 interface IResultadoRequest {
@@ -104,7 +108,8 @@ export default class Pregunta extends React.Component<IPregProps, IResultState> 
       resultsV2: Object.assign({}, props.resultsV2Props),
       resultsG: Object.assign({}, props.resultsGProps),
       editableAlter: Object.assign({}, props.params ),
-      progress: 'progress scale-transition scale-out'
+      progress: 'progress scale-transition scale-out',
+      show: false
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -464,7 +469,7 @@ export default class Pregunta extends React.Component<IPregProps, IResultState> 
     const { editableAlter, resultsTotal, resultsA1, resultsA2, resultsA3, resultsA4, resultsA5, resultsB1, resultsB2, resultsB3, resultsBM, resultsC1, resultsC2, resultsC3, resultsD1, resultsD2, resultsE1, resultsE2, resultsV1, resultsV2, resultsG } = this.state;
 
     if ( Object.getOwnPropertyNames(resultsTotal).sort().length < Object.getOwnPropertyNames(editableAlter).sort().length ) {
-      alert( 'Debe contestar todas las preguntas!' );
+      this.setState({ show: true });
 
     } else {
       this.test();
@@ -1033,6 +1038,14 @@ export default class Pregunta extends React.Component<IPregProps, IResultState> 
             </form>
             <br/><br/><br/>
         </div>
+        <SweetAlert
+          show={this.state.show}
+          type='error'
+          title='Debe responder todas las preguntas'
+          onConfirm={ () => {
+            this.setState({ show: false });
+          }}
+        />
       </div>
     );
   }

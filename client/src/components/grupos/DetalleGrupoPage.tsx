@@ -1,9 +1,12 @@
 import * as React from 'react';
 
 import { Link } from 'react-router';
-import { IGrupo } from '../../types';
 import { url } from '../../util';
+import { IGrupo, IRouterContext } from '../../types';
 
+import SweetAlert from '../../../node_modules/sweetalert-react';
+import '../../../node_modules/sweetalert/dist/sweetalert.css';
+import Materialize from '../../../node_modules/materialize-css/dist/js/materialize';
 
 interface IGruposPageProps {
   params?: { grupoId?: string };
@@ -11,14 +14,21 @@ interface IGruposPageProps {
 
 interface IGrupoPageState {
   grupo?: IGrupo;
+  show?: boolean;
 }
 
 export default class DetalleGruposPage extends React.Component<IGruposPageProps, IGrupoPageState> {
 
+  context: IRouterContext;
+
+  static contextTypes = {
+    router: React.PropTypes.object.isRequired
+  };
+
   constructor() {
     super();
 
-    this.state = {};
+    this.state = { show: false };
   }
 
   componentDidMount() {
@@ -33,16 +43,16 @@ export default class DetalleGruposPage extends React.Component<IGruposPageProps,
   }
 
   delete(id) {
-
-      const fetchUrl = url(`api/grupoD/${id}`);
-      fetch(fetchUrl, {method: 'DELETE'})
+    const fetchUrl = url(`api/grupoD/${id}`);
+    fetch(fetchUrl, {method: 'DELETE'})
         .then(response => response.json())
         .then(grupo => this.setState({ grupo }));
   }
-  deleteAlumno(alumnoId, grupoId) {
 
-      const fetchUrl = url(`api/alumnoD/${grupoId}/${alumnoId}`);
-      fetch(fetchUrl)
+  deleteAlumno(alumnoId, grupoId) {
+    Materialize.toast('Alumno eliminado!', 3000, 'rounded');
+    const fetchUrl = url(`api/alumnoD/${grupoId}/${alumnoId}`);
+    fetch(fetchUrl)
         .then(response => response.json());
   }
 
@@ -67,7 +77,7 @@ export default class DetalleGruposPage extends React.Component<IGruposPageProps,
                   <i className='material-icons'>mode_edit</i>
                 </a>
                 <ul>
-                  <li><a className='btn-floating red tooltipped' data-position='bottom' data-delay='50' data-tooltip='Eliminar grupo' onClick={() => this.delete(grupo.id)} href={`/grupos`}><i className='material-icons'>delete</i></a></li>
+                  <li><a className='btn-floating red tooltipped' data-position='bottom' data-delay='50' data-tooltip='Eliminar grupo' onClick={() => this.setState({ show: true })}><i className='material-icons'>delete</i></a></li>
                   <li><a className='btn-floating green tooltipped' data-position='bottom' data-delay='50' data-tooltip='Agregar alumnos' href={`/grupo/${grupo.id}/lista`}><i className='material-icons'>add</i></a></li>
                 </ul>
               </div>
@@ -87,6 +97,26 @@ export default class DetalleGruposPage extends React.Component<IGruposPageProps,
             </tbody>
           </table>
         </div>
+        <SweetAlert
+          show={ this.state.show }
+          type='warning'
+          title='Estas seguro?'
+          text='Se eliminará todos los registros de este grupo.'
+          confirmButtonColor='#DD6B55'
+          showCancelButton
+          onConfirm={ () => {
+            this.setState({ show: false });
+            this.delete(grupo.id);
+            this.context.router.push({
+                pathname: '/grupos'
+            });
+          }}
+          onCancel={() => {
+            this.setState({ show: false });
+          }}
+          onEscapeKey={() => this.setState({ show: false })}
+          onOutsideClick={() => this.setState({ show: false })}
+        />
       </span>
     );
   }

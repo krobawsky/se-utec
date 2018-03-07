@@ -28,7 +28,7 @@ export default class Test3Page extends React.Component<ITestPageProps, ITestPage
   }
 
   componentDidMount() {
-    const fetchUrl = url(`api/tests/3`);
+    const fetchUrl = url('api/tests/3');
     fetch(fetchUrl)
         .then(response => response.json())
         .then(test => { console.log('test', test); this.setState({ test }); });
