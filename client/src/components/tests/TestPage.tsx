@@ -8,8 +8,9 @@ import RadioInput from '../form/RadioInput';
 import { IError, IRouterContext, ITest, IPregunta, IAlternativa } from '../../types';
 
 interface ITestPageProps {
- location: HistoryModule.Location;
+  location: HistoryModule.Location;
 }
+
 interface ITestPageState {
   test?: ITest;
   resultadoId?: string;

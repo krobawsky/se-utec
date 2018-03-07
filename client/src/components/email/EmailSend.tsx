@@ -19,6 +19,7 @@ interface IAlumnoEditorState {
   alumno?: IAlumno;
   error?: IError;
   mensaje?: string;
+  progress?: string;
 };
 
 
@@ -39,7 +40,8 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
 
     this.state = {
       alumno: Object.assign({}, props.initialEmail),
-      mensaje: 'transparent-text'
+      mensaje: 'transparent-text',
+      progress: 'progress scale-transition scale-out'
     };
   }
 
@@ -48,16 +50,17 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
 
     const { alumno } = this.state;
     console.log(alumno);
+
     if ( alumno.lastName === '' || alumno.lastName === null ) {
       this.alerta();
     } else {
+      this.test();
       const url = alumno.isNew ? '/api/send-mail' : '/api/alumno/' + alumno.id;
       submitForm(alumno.isNew ? 'POST' : 'PUT', url, alumno, (status, response) => {
         if (status === 200 || status === 201) {
           const newAlumno = response as IAlumno;
-          this.context.router.push({
-            pathname: '/emailform/emailenviado'
-          });
+          alert('Mensaje enviado satisfactoriamente.');
+          window.location.reload();
         } else {
           console.log('ERROR?!...', response);
           this.setState({ error: response });
@@ -78,6 +81,13 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
     });
     alert('Ingrese el apellido de un alumno o grupo válido');
   }
+
+  test  = () => {
+    this.setState ({
+      progress: 'progress scale-transition scale-in'
+    });
+  }
+
   render() {
     const { alumno, error } = this.state;
     return (
@@ -122,7 +132,7 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
                       <div className='row'>
                         <div className='col s12'>
                         <div className='input-field col s12'>
-            <RadioB object={alumno} error={error} name={name} options={tip} onChange={this.onInputChange} />
+                          <RadioB object={alumno} error={error} name={name} options={tip} onChange={this.onInputChange} />
                         </div>
                       </div>
                     </div>
@@ -144,10 +154,13 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
                       </div>
                   </form>
             </div>
-        <div className='right'>
-        <button className='btn btn-default' type='submit' onClick={this.onSubmit}>Enviar<i className='material-icons right'>send</i></button>
-        </div>
-        <br/>
+            <div className='right'>
+            <button className='btn btn-default' type='submit' onClick={this.onSubmit}>Enviar<i className='material-icons right'>send</i></button>
+            </div>
+            <br/><br/>
+            <div className={this.state.progress}>
+              <div className='indeterminate'></div>
+            </div>
             </div>
           </div>
         </div>

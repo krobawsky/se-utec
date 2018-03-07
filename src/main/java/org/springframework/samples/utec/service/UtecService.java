@@ -18,8 +18,6 @@ public interface UtecService {
 
 	Alumno findAlumnoById(int id) throws DataAccessException;
 
-	Resultado findResultadoById(int resultadoId) throws DataAccessException;
-
 	Collection<Grupo> findGrupos() throws DataAccessException;
 
 	Grupo findGrupoById(int grupoId) throws DataAccessException;
@@ -33,9 +31,17 @@ public interface UtecService {
 	Collection<Alumno> findAlumnosGroupByLastName(String alumnoLastname, String grupo)throws DataAccessException;
 
 	Collection<Grupo> findGrupoByName(String name) throws DataAccessException;
+	
 
+	Collection<Resultado> findResultados();
+	
+	Resultado findResultadoById(int resultadoId) throws DataAccessException;
+	
 	void saveResultado(Resultado resultado)throws DataAccessException;
 
+	void deleteResultado(int resultadoId) throws DataAccessException;
+	
+	
 	Collection<Test> findTests();
 
 	Test findTestById(int testId) throws DataAccessException;
@@ -71,8 +77,7 @@ public interface UtecService {
 
 	void deleteAlumno(int id);
 
-	void deleteUser(int id);
-	
+	void deleteUser(int id);	
 	
 
 }

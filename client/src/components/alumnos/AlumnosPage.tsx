@@ -36,7 +36,7 @@ export default class AlumnosPage extends React.Component<IAlumnosPageProps, IAlu
 
   render() {
     const { alumno } = this.state;
-
+    console.log(alumno);
     if (!alumno) {
       return  <div className='center-align'>
                 <br></br><br></br><br></br><br></br><br></br>
@@ -59,10 +59,10 @@ export default class AlumnosPage extends React.Component<IAlumnosPageProps, IAlu
       <span>
         <div className='row'>
           <div className='col s12 m4 l3'>
-        <AlumnoInformation alumno={alumno} />
+            <AlumnoInformation alumno={alumno} />
           </div>
           <div className='col s12 m8 l9'>
-         <AlumnoResultado alumno={alumno} />
+            <AlumnoResultado params={alumno}/>
           </div>
         </div>
       </span>

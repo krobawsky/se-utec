@@ -2,6 +2,7 @@ package org.springframework.samples.utec.web.api;
 
 import javax.validation.Valid;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.samples.utec.model.Alumno;
@@ -126,6 +127,9 @@ public class ResultadoResource extends AbstractResourceController{
 		resultado.setTest(resultadoRequest.getTest());
 		resultado.setDescripcion(resultadoRequest.getDescripcion());
 		resultado.setDate(resultadoRequest.getDate());
+		LocalDate localDate = resultado.getExpdate();
+		LocalDate expdate = localDate.plusDays(resultadoRequest.getExpdate());
+		resultado.setExpdate(expdate);
 
 		utecService.saveResultado(resultado);
 		

@@ -11,12 +11,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ResultadoRequest {
 	
 	private Integer id;
+	
 	@JsonFormat(pattern = "yyyy/MM/dd")
 	private LocalDate date;
 	
 	@Size(min = 1)
 	private String test;
+	
 	private String descripcion;
+	
+	private Integer expdate;
 	
 	public Integer getId() {
 		return id;
@@ -42,6 +46,13 @@ public class ResultadoRequest {
 	}
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+	
+	public Integer getExpdate() {
+		return expdate;
+	}
+	public void setExpdate(Integer expdate) {
+		this.expdate = expdate;
 	}
 	
 	@JsonProperty("isNew")

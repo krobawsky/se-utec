@@ -157,6 +157,11 @@ public class UtecServiceImpl implements UtecService {
 
 	
     /* Resultados */
+	@Override
+	public Collection<Resultado> findResultados() {
+		 return resultadoRepository.findAll();
+	}
+	
     @Override
     @Transactional(readOnly = true)
     public Resultado findResultadoById(int id) throws DataAccessException {
@@ -168,6 +173,10 @@ public class UtecServiceImpl implements UtecService {
 		resultadoRepository.save(resultado);
 	}
 	
+	@Override
+    public void deleteResultado(int resultadoId) throws DataAccessException {
+		resultadoRepository.delete(resultadoId);
+    }
 	
 	/* Tests */
 	@Override

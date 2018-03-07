@@ -14,14 +14,16 @@ export default ({grupo}: { grupo: IGrupo }) => (
       <div className='divider'></div>
       <h6 className='center-align cyan-text text-darken-2'>No han resuelto:</h6>
       <br/>
-      <div style={{height: '100px', overflowY: 'scroll'}}>
-      {grupo.alumnos.map(alumno =>
-         alumno.resultados.map(resultado =>
-             resultado.date === null ? (
-             <p>{alumno.firstName}</p>
-             ) : (
-             null
-             )))}
+      <div style={{height: '180px', overflowY: 'scroll'}}>
+        {grupo.alumnos.map(alumno =>
+          alumno.resultados.map(resultado =>
+            resultado.date === null ? (
+              <blockquote><a href={`/alumnos/${alumno.id}`}>{alumno.firstName}</a></blockquote>
+            ) : (
+              null
+            ))
+          )
+        }
       </div>
     </div>
   </section>

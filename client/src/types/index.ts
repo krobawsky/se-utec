@@ -94,7 +94,6 @@ export interface IResultadoRequest {
 }
 
 export interface IAlumno extends IPerson {
-
   codigo: string;
   password: string;
   correo: string;
@@ -110,6 +109,7 @@ export interface IResultado extends IBaseEntity {
   test: string;
   descripcion: string;
   date: Date;
+  expdate: Date;
   valores: IValores[];
 };
 
@@ -146,4 +146,10 @@ export interface IEmail extends IBaseEntity {
   to: string;
   subject: string;
   body: string;
+};
+
+export interface IDay {
+  diaEst: any;
+  diaMil: any;
+  diaIce: any;
 };

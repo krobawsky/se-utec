@@ -124,5 +124,11 @@ public class Resultado extends BaseEntity {
     	getValoresInternal().add(value);
     	value.setResultado(this);
     }
+
+	@Override
+	public String toString() {
+		return "Resultado [test=" + test + ", descripcion=" + descripcion + ", date=" + date + ", alumno=" + alumno
+				+ ", expdate=" + expdate + ", valores=" + valores + "]";
+	}
 	
 }

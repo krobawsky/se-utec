@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class EmailResource extends AbstractResourceController {
 
-private final Logger logger = Logger.getLogger(UserResource.class);
+	private final Logger logger = Logger.getLogger(UserResource.class);
 	
 	private final DataService	dataService;
 	
@@ -106,17 +106,21 @@ private final Logger logger = Logger.getLogger(UserResource.class);
 				for (int i = 0; i < ides.size(); i++){
 					 logger.info("imprimiendo los ID de los alumnos..."+ides.get(i));
 					 
-					 SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-					 String formatted = df.format(new Date());
-					 LocalDate localDate = LocalDate.parse(formatted);
-					 logger.info(localDate);
+					//Get current date time
+				    LocalDateTime now = LocalDateTime.now();
+				        
+				    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				    String formatDateTime = now.format(formatter);
+
+					LocalDate localDate = LocalDate.parse(formatDateTime);
+					LocalDate expdate = localDate.plusDays(30); // Tiene 30 dias para resolver la prueba
 					 
 					 Resultado result = new Resultado();
 					 Resultado resulta = new Resultado();
 					 resulta.setId(null);
 					 resulta.setDate(null);
 					 resulta.setDescripcion("Prueba asignada...");
-					 resulta.setExpdate(localDate);
+					 resulta.setExpdate(expdate);
 					 resulta.setTest(alumno.getCarrera());
 					 
 					 Alumno alm = this.utecService.findAlumnoById(ides.get(i));
@@ -145,9 +149,8 @@ private final Logger logger = Logger.getLogger(UserResource.class);
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		        String formatDateTime = now.format(formatter);
 
-				logger.info(formatDateTime);
 				LocalDate localDate = LocalDate.parse(formatDateTime);
-				LocalDate expdate = localDate.plusDays(30);
+				LocalDate expdate = localDate.plusDays(30); // Tiene 30 dias para resolver la prueba
 				
 				Resultado result = new Resultado();
 				Resultado resulta = new Resultado();
