@@ -14,7 +14,7 @@ export default ({grupo}: { grupo: IGrupo }) => (
       <div className='divider'></div>
       <h6 className='center-align cyan-text text-darken-2'>No han resuelto:</h6>
       <br/>
-      <div style={{height: '180px', overflowY: 'scroll'}}>
+      <div style={{height: '240px', overflowY: 'scroll'}}>
         {grupo.alumnos.map(alumno =>
           alumno.resultados.map(resultado =>
             resultado.date === null ? (
