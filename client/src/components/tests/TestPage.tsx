@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { url, submitForm } from '../../util';
 import TestInformation from './TestInformation';
 import TestPreguntas from './TestPreguntas';
+import Salud from './Salud';
 import RadioInput from '../form/RadioInput';
 import { IError, IRouterContext, ITest, IPregunta, IAlternativa } from '../../types';
 
@@ -53,12 +54,12 @@ export default class TestPage extends React.Component<ITestPageProps, ITestPageS
                   </div>
                 </div>
               </div>;
-    }
 
+    }
     return (
       <span>
         <TestInformation test={test} />
-        <TestPreguntas params={test.preguntas} resultadoId={resultadoId}/>
+        <Salud/>
       </span>
     );
   }
