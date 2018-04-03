@@ -74,6 +74,7 @@ interface IResultState {
   error?: IError;
   progress?: string;
   show?: boolean;
+  show2?: boolean;
 }
 
 interface IResultadoRequest {
@@ -131,7 +132,8 @@ export default class Pregunta extends React.Component<IPregProps, IResultState> 
       resultsPP: Object.assign({}, props.resultsPPProps),
       editableAlter: Object.assign({}, props.params ),
       progress: 'progress scale-transition scale-out',
-      show: false
+      show: false,
+      show2: false
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -2713,9 +2715,8 @@ export default class Pregunta extends React.Component<IPregProps, IResultState> 
           const url = 'api/tests/results/' + resultadoId + '/values';
           submitForm('POST', url, valuableRequest, (status, response) => {
             if (status === 204) {
-              this.context.router.push({
-                pathname: '/'
-              });
+              console.log('res: ', response);
+              this.setState({ show2: true });
             } else {
               console.log('Error?!...', response);
             }
@@ -2774,6 +2775,17 @@ export default class Pregunta extends React.Component<IPregProps, IResultState> 
           title='Debe responder todas las preguntas'
           onConfirm={ () => {
             this.setState({ show: false });
+          }}
+        />
+        <SweetAlert
+          show={this.state.show2}
+          type='success'
+          title='Se resolvio el test correctamente'
+          onConfirm={ () => {
+            this.setState({ show2: false });
+            this.context.router.push({
+              pathname: '/'
+            });
           }}
         />
       </div>
