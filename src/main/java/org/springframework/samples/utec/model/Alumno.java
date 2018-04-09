@@ -59,6 +59,9 @@ public class Alumno extends Person {
 	@OneToMany(cascade= CascadeType.ALL, mappedBy = "alumno" )
 	private Set<Resultado> resultados;
 	
+	@OneToMany(cascade= CascadeType.ALL, mappedBy = "alumno" )
+	private Set<Res_formulario> res_formulario;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "alumno_has_grupo", joinColumns = @JoinColumn(name = "alumno_idalumno"),
 	inverseJoinColumns = @JoinColumn(name = "grupo_idgrupo"))
@@ -144,6 +147,28 @@ public class Alumno extends Person {
 		PropertyComparator.sort(sortedResultados, new MutableSortDefinition("test", true, true));
 		return Collections.unmodifiableList(sortedResultados);
 	}
+	
+	public void setRes_formulario(Set<Res_formulario> res_formulario) {
+		this.res_formulario = res_formulario;
+	}
+	
+	protected Set<Res_formulario> getRes_formularioInternal(){
+		if (this.res_formulario == null) {
+			this.res_formulario = new HashSet<>();
+		}
+		return this.res_formulario;
+	}
+	
+	protected void setRes_formularioInternal(Set<Res_formulario> res_formulario) {
+		this.res_formulario = res_formulario;
+	}
+	
+	public List<Res_formulario> getRes_formulario(){
+		List<Res_formulario> sortedResultados= new ArrayList<>(getRes_formularioInternal());
+		PropertyComparator.sort(sortedResultados, new MutableSortDefinition("test", true, true));
+		return Collections.unmodifiableList(sortedResultados);
+	}
+	
 	
 	protected Set<Grupo> getGruposInternal(){
 		if (this.grupos == null) {

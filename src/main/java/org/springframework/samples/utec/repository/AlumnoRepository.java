@@ -11,8 +11,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.utec.model.Alumno;
+import org.springframework.samples.utec.model.Res_formulario;
 
 public interface AlumnoRepository extends Repository<Alumno, Integer>{
+	
+	@Query("SELECT DISTINCT alumno FROM Alumno alumno left join alumno.res_formulario resultado WHERE resultado.lugar_nacimiento LIKE :dato%")
+	Collection<Alumno> filterDataNac(@Param("dato") String dato);
+	
+	@Query("SELECT DISTINCT alumno FROM Alumno alumno left join alumno.res_formulario resultado WHERE resultado.enfermedad LIKE :dato%")
+	Collection<Alumno> filterDataEnf(@Param("dato") String dato);
+	
+	@Query("SELECT DISTINCT alumno FROM Alumno alumno left join alumno.res_formulario resultado WHERE resultado.deporte LIKE :dato%")
+	Collection<Alumno> filterDataDep(@Param("dato") String dato);
+	
 	
 	@Query("SELECT DISTINCT alumno FROM Alumno alumno WHERE alumno.lastName LIKE :lastName%")
 	Collection<Alumno> findByLastName(@Param("lastName") String lastName);

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.utec.model.Alumno;
 import org.springframework.samples.utec.model.Grupo;
+import org.springframework.samples.utec.model.Res_formulario;
 import org.springframework.samples.utec.model.Resultado;
 import org.springframework.samples.utec.model.Test;
 import org.springframework.samples.utec.model.User;
@@ -45,6 +46,22 @@ public class UtecServiceImpl implements UtecService {
 		// TODO Auto-generated constructor stub
 	}
 
+	
+	@Override
+	public Collection<Alumno> filterResultadoByNacimiento(String dato) throws DataAccessException {
+		return alumnoRepository.filterDataNac(dato);
+	}
+	
+	@Override
+	public Collection<Alumno> filterResultadoByEnfermedad(String dato) throws DataAccessException {
+		return alumnoRepository.filterDataEnf(dato);
+	}
+	
+	@Override
+	public Collection<Alumno> filterResultadoByDeporte(String dato) throws DataAccessException {
+		return alumnoRepository.filterDataDep(dato);
+	}
+	
 	/* Alumnos */
     @Override
 	@Transactional(readOnly = true)
@@ -167,6 +184,7 @@ public class UtecServiceImpl implements UtecService {
     public Resultado findResultadoById(int id) throws DataAccessException {
     	return resultadoRepository.findById(id);
     }
+
 
 	@Override
 	public void saveResultado(Resultado resultado) throws DataAccessException {

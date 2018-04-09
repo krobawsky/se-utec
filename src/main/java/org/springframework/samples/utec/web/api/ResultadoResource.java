@@ -1,11 +1,14 @@
 package org.springframework.samples.utec.web.api;
 
+import java.util.Collection;
+
 import javax.validation.Valid;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.samples.utec.model.Alumno;
+import org.springframework.samples.utec.model.Res_formulario;
 import org.springframework.samples.utec.model.Resultado;
 import org.springframework.samples.utec.model.Valores;
 import org.springframework.samples.utec.service.UtecService;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -146,5 +150,21 @@ public class ResultadoResource extends AbstractResourceController{
 
         utecService.saveValor(value);
     }
+	
+	
+	@GetMapping("/formulario/{area}/{dato}")
+	public Collection<Alumno> findResultadoFormularioCollection(@PathVariable("area") String area, @PathVariable("dato") String dato) {
+		
+		if(area.equalsIgnoreCase("lugar_nacimiento")) {
+			return this.utecService.filterResultadoByNacimiento(dato);
+		} else if(area.equalsIgnoreCase("enfermedad")) {
+			return this.utecService.filterResultadoByEnfermedad(dato);
+		} else if(area.equalsIgnoreCase("deporte")) {
+			return this.utecService.filterResultadoByDeporte(dato);
+		} else {
+			return null;
+		}
+		
+	}
 	
 }

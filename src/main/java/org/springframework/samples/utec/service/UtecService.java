@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.utec.model.Alumno;
 import org.springframework.samples.utec.model.Grupo;
+import org.springframework.samples.utec.model.Res_formulario;
 import org.springframework.samples.utec.model.Resultado;
 import org.springframework.samples.utec.model.Test;
 import org.springframework.samples.utec.model.User;
@@ -14,6 +15,7 @@ import org.springframework.samples.utec.model.Valores;
 
 public interface UtecService {
 
+	
 	Collection<Alumno> findAlumnoByLastName(String lastName) throws DataAccessException;
 
 	Alumno findAlumnoById(int id) throws DataAccessException;
@@ -77,7 +79,16 @@ public interface UtecService {
 
 	void deleteAlumno(int id);
 
-	void deleteUser(int id);	
+	void deleteUser(int id);
+
+
+	Collection<Alumno> filterResultadoByNacimiento(String dato) throws DataAccessException;
+
+
+	Collection<Alumno> filterResultadoByEnfermedad(String dato) throws DataAccessException;
+
+
+	Collection<Alumno> filterResultadoByDeporte(String dato) throws DataAccessException;	
 	
 
 }

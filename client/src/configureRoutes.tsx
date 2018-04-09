@@ -5,6 +5,8 @@ import App from './components/App';
 
 import WelcomePage from './components/WelcomePage';
 import ErrorPage from './components/ErrorPage';
+import FormularioPage from './components/formulario/FormularioPage';
+import FiltrarFormularioPage from './components/formulario/FiltrarFormularioPage';
 import FindAlumnosPage from './components/alumnos/FindAlumnosPage';
 import AlumnosPage from './components/alumnos/AlumnosPage';
 import EditResultadoPage from './components/resultados/EditResultadoPage';
@@ -49,6 +51,8 @@ export default () => (
     <Route path='/alumnos/:alumnoId/resultados/:resultadoId/edit' component={EditResultadoPage} />
     <Route path='/alumnos/:alumnoId/resultados/:resultadoId' component={ResultadoPage} />
     <Route path='/alumnos/:alumnoId/resultados/:resultadoId/print' component={ResultadoPrint} />
+    <Route path='/formulario/list' component={FiltrarFormularioPage} />
+    <Route path='/formulario/:area/:dato' component={FormularioPage} />
     <Route path='/grupos' component={GruposPage} />
     <Route path='/grupos/nuevo' component={NuevoGrupoPage} />
     <Route path='/grupos/:grupoId' component={DetalleGrupoPage} />

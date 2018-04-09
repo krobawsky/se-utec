@@ -103,17 +103,18 @@ export default class EmailSend extends React.Component<IAlumnoEditorProps, IAlum
           <i className='material-icons'>menu</i>
         </a>
         <ul id='slide-out' className='side-nav white'>
-           <li><h5 className='center'>UTECTEST</h5></li>
+          <li><h5 className='center'>UTECTEST</h5></li>
           <li><a><img src='/images/admi.png' width='210' id='img' height='200' /></a></li>
           <li><a><i className='material-icons'>e</i></a></li>
-           <li><a><i className='material-icons'>e</i></a></li>
-           <li><a><i className='material-icons'>e</i></a></li>
+          <li><a><i className='material-icons'>e</i></a></li>
+          <li><a><i className='material-icons'>e</i></a></li>
           <li><a className='subheader'>Opciones</a></li>
           <li><a href='/welcome' title='Enviar'><i className='material-icons'>send</i>Enviar Test</a></li>
           <li><a href='/grupos' title='Grupos'><i className='material-icons'>group_add</i>Añadir grupos</a></li>
           <li><div className='divider'></div></li>
           <li><a className='subheader'>Resultados</a></li>
           <li><a href='/alumnos/list' title='Alumnos'><i className='material-icons'>person</i>Alumnos</a></li>
+          <li><a href='/formulario/list' title='Formulario'><i className='material-icons'>book</i>Formulario</a></li>
           <li><a href='/grupo/list' title='Grupos'><i className='material-icons'>group</i>Grupos</a></li>
           <li><div className='divider'></div></li>
           <li><a href='/'><i className='material-icons'>exit_to_app</i>CERRAR SESIÓN</a></li>
