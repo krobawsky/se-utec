@@ -43,6 +43,10 @@ public interface UtecService {
 
 	void deleteResultado(int resultadoId) throws DataAccessException;
 	
+	Res_formulario findResFormularioById(int id) throws DataAccessException;
+
+	void saveResFormulario(Res_formulario resultado) throws DataAccessException;	
+	
 	
 	Collection<Test> findTests();
 
@@ -88,7 +92,8 @@ public interface UtecService {
 	Collection<Alumno> filterResultadoByEnfermedad(String dato) throws DataAccessException;
 
 
-	Collection<Alumno> filterResultadoByDeporte(String dato) throws DataAccessException;	
+	Collection<Alumno> filterResultadoByDeporte(String dato) throws DataAccessException;
+
 	
 
 }

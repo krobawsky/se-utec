@@ -13,18 +13,13 @@ import org.springframework.samples.utec.model.Res_formulario;
 import org.springframework.samples.utec.model.Resultado;
 
 
-public interface ResultadoRepository extends Repository<Resultado, Integer>{
+public interface ResFormularioRepository extends Repository<Res_formulario, Integer>{
+
+	// Resultado de formularios
 	
-	Collection<Resultado> findAll() throws DataAccessException;
+	@Query("SELECT resultado FROM Res_formulario resultado WHERE resultado.id =:id")
+	Res_formulario findFormById(@Param("id") Integer id);
 	
-	@Query("SELECT resultado FROM Resultado resultado left join fetch resultado.valores WHERE resultado.id =:id")
-	Resultado findById(@Param("id") Integer id);
-	
-	void save(Resultado resultado);
-	
-	@Transactional
-	@Modifying
-	@Query("DELETE Resultado res WHERE res.id =:id")
-	void delete(@Param("id") int id);
+	void save(Res_formulario resultado);
 
 }

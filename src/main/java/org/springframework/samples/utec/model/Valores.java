@@ -57,8 +57,6 @@ public class Valores extends BaseEntity {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	
-	
 
 	public Integer getPosicion() {
 		return posicion;

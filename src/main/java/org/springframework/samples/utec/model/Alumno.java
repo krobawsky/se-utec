@@ -191,7 +191,11 @@ public class Alumno extends Person {
 
 	public void addResultado(Resultado res) {
 		getResultadosInternal().add(res);
-		
-		  res.setAlumno(this);
+		res.setAlumno(this);
+	}
+	
+	public void addResFormulario(Res_formulario res) {
+		getRes_formularioInternal().add(res);
+		res.setAlumno(this);
 	}
 }

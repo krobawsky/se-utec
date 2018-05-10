@@ -153,3 +153,16 @@ export interface IDay {
   diaMil: any;
   diaIce: any;
 };
+
+export interface IFormularioRequest {
+  enfermedad?: string;
+  enfermedades?: any;
+  grado?: string;
+  alergia?: string;
+  medicamento?: string;
+  sangre?: string;
+  conTratamiento?: string;
+  tratamiento?: string;
+  tratamientoOtro?: string;
+};
+

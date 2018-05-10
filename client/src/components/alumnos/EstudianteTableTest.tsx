@@ -34,9 +34,11 @@ export default ({alumno}: { alumno: IAlumno }) => (
    <Link to={{ pathname : `/student/tests/estres`, state: { resultadoId: resultado.id }}} className='btn-floating btn-small waves-effect waves-light yellow'><i className='material-icons'>edit</i></Link>
             ) : ( resultado.test === 'Test de Millon' ? (
   <Link to={{ pathname : `/student/tests/millon`, state: { resultadoId: resultado.id }}} className='btn-floating btn-small waves-effect waves-light yellow'><i className='material-icons'>edit</i></Link>
-                ) : (
+                ) : ( resultado.test === 'Test ICE Baron' ? (
 <Link to={{ pathname : `/student/tests/baron`, state: { resultadoId: resultado.id }}} className='btn-floating btn-small waves-effect waves-light yellow'><i className='material-icons'>edit</i></Link>
-                ))}
+                ) : (
+<Link to={{ pathname : `/student/tests/formulario`, state: { resultadoId: resultado.id, alumnoId: alumno.id }}} className='btn-floating btn-small waves-effect waves-light yellow'><i className='material-icons'>edit</i></Link>
+                )))}
                 </td>
               </tr>
               ) : (

@@ -36,7 +36,7 @@ export default class EstudiantePage extends React.Component<IAlumnosPageProps, I
 
   render() {
     const { alumno } = this.state;
-
+    console.log(alumno);
     if (!alumno) {
       return <div className='center-align'>
                 <br></br><br></br><br></br><br></br><br></br>

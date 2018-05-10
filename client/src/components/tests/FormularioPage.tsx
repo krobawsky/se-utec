@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import { url, submitForm } from '../../util';
 import TestInformation from './TestInformation';
-import TestPreguntas from './TestPreguntas';
+import Salud from './Salud';
 import RadioInput from '../form/RadioInput';
 import { IError, IRouterContext, ITest, IPregunta, IAlternativa } from '../../types';
 
@@ -14,6 +14,7 @@ interface ITestPageProps {
 interface ITestPageState {
   test?: ITest;
   resultadoId?: string;
+  alumnoId?: string;
 }
 
 export default class TestPage extends React.Component<ITestPageProps, ITestPageState> {
@@ -21,7 +22,7 @@ export default class TestPage extends React.Component<ITestPageProps, ITestPageS
   constructor(props) {
     super(props);
 
-    this.state = { resultadoId: props.location.state.resultadoId };
+    this.state = { resultadoId: props.location.state.resultadoId, alumnoId: props.location.state.alumnoId };
   }
 
   componentDidMount() {
@@ -34,9 +35,10 @@ export default class TestPage extends React.Component<ITestPageProps, ITestPageS
 
   render() {
     const { test } = this.state;
-    const { resultadoId } = this.state;
+    const { resultadoId, alumnoId } = this.state;
     const { params } = this.props;
     console.log('TestPage: ' + resultadoId);
+    console.log('Alumno: ' + alumnoId);
     if (!test) {
       return  <div className='center-align'>
                 <br></br><br></br><br></br><br></br><br></br>
@@ -58,7 +60,7 @@ export default class TestPage extends React.Component<ITestPageProps, ITestPageS
     return (
       <span>
         <TestInformation test={test} />
-        <TestPreguntas params={test.preguntas} resultadoId={resultadoId}/>
+        <Salud resultadoId={resultadoId} alumnoId={alumnoId}/>
       </span>
     );
   }

@@ -14,6 +14,7 @@ import org.springframework.samples.utec.model.User;
 import org.springframework.samples.utec.model.Valores;
 import org.springframework.samples.utec.repository.AlumnoRepository;
 import org.springframework.samples.utec.repository.GrupoRepository;
+import org.springframework.samples.utec.repository.ResFormularioRepository;
 import org.springframework.samples.utec.repository.ResultadoRepository;
 import org.springframework.samples.utec.repository.TestRepository;
 import org.springframework.samples.utec.repository.UserRepository;
@@ -27,16 +28,18 @@ public class UtecServiceImpl implements UtecService {
 
     private AlumnoRepository alumnoRepository;
     private ResultadoRepository resultadoRepository;
+    private ResFormularioRepository resFormularioRepository;
     private GrupoRepository grupoRepository;
     private TestRepository testRepository;
     private ValorRepository valoresRepository;
     private UserRepository userRepository;
     
     @Autowired
-    public UtecServiceImpl(UserRepository userRepository, AlumnoRepository alumnoRepository, ResultadoRepository resultadoRepository, ValorRepository valoresRepository, GrupoRepository grupoRepository, TestRepository testRepository) {
+    public UtecServiceImpl(UserRepository userRepository, AlumnoRepository alumnoRepository, ResultadoRepository resultadoRepository, ResFormularioRepository resFormularioRepository, ValorRepository valoresRepository, GrupoRepository grupoRepository, TestRepository testRepository) {
         this.valoresRepository = valoresRepository;
         this.alumnoRepository = alumnoRepository;
         this.resultadoRepository = resultadoRepository;
+        this.resFormularioRepository = resFormularioRepository;
         this.grupoRepository = grupoRepository;
         this.testRepository = testRepository;
         this.userRepository = userRepository;
@@ -195,6 +198,19 @@ public class UtecServiceImpl implements UtecService {
     public void deleteResultado(int resultadoId) throws DataAccessException {
 		resultadoRepository.delete(resultadoId);
     }
+	
+	@Override
+    @Transactional(readOnly = true)
+    public Res_formulario findResFormularioById(int id) throws DataAccessException {
+    	return resFormularioRepository.findFormById(id);
+    }
+
+
+	@Override
+	public void saveResFormulario(Res_formulario resultado) throws DataAccessException {
+		resFormularioRepository.save(resultado);
+	}
+	
 	
 	/* Tests */
 	@Override

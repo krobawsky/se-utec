@@ -126,6 +126,26 @@ public class ResultadoResource extends AbstractResourceController{
 		
 	}
 	
+	@RequestMapping(value = "/tests/resultsForm/{alumnoId}/values", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addValuesForm(final @PathVariable("alumnoId") int studentId, final @Valid @RequestBody ResFormularioRequest resFormRequest, 
+            final BindingResult bindingResult) {
+       
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException("Submitted val invalid", bindingResult);
+        }
+        
+        Res_formulario resForm = new Res_formulario();
+        Alumno student = this.utecService.findAlumnoById(studentId);
+        if (student == null) {
+            throw new BadRequestException("Student with Id '" + studentId + "' is unknown.");
+        }
+    
+        student.addResFormulario(resForm);
+        saveForm(resForm, resFormRequest);
+        
+    }
+	
 	private Resultado save(Resultado resultado, ResultadoRequest resultadoRequest) {
 
 		resultado.setTest(resultadoRequest.getTest());
@@ -151,6 +171,30 @@ public class ResultadoResource extends AbstractResourceController{
         utecService.saveValor(value);
     }
 	
+	private Res_formulario saveForm(Res_formulario resultado, ResFormularioRequest resultadoRequest) {
+
+		resultado.setLugar_nacimiento(resultadoRequest.getLugar_nacimiento());
+		resultado.setNombre_contacto(resultadoRequest.getNombre_contacto());
+		resultado.setParentesco_contacto(resultadoRequest.getParentesco_contacto());
+		resultado.setTelefono_contacto(resultadoRequest.getTelefono_contacto());
+		resultado.setConviviente(resultadoRequest.getConviviente());
+		resultado.setVivienda(resultadoRequest.getVivienda());
+		resultado.setEnfermedad(resultadoRequest.getEnfermedad());
+		resultado.setGrado_enfermedad(resultadoRequest.getGrado_enfermedad());
+		resultado.setAlergias(resultadoRequest.getAlergias());
+		resultado.setMedicamentos(resultadoRequest.getMedicamentos());
+		resultado.setTratamiento(resultadoRequest.getTratamiento());
+		resultado.setDeporte(resultadoRequest.getDeporte());
+		resultado.setFederacion_deportiva(resultadoRequest.getFederacion_deportiva());
+		resultado.setTiempos_libres(resultadoRequest.getTiempos_libres());
+		resultado.setInstrumento_musical(resultadoRequest.getInstrumento_musical());
+		resultado.setAsociacion(resultadoRequest.getAsociacion());
+
+		utecService.saveResFormulario(resultado);
+		
+		return resultado;
+		
+	}
 	
 	@GetMapping("/formulario/{area}/{dato}")
 	public Collection<Alumno> findResultadoFormularioCollection(@PathVariable("area") String area, @PathVariable("dato") String dato) {

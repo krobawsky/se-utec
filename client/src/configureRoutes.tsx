@@ -22,6 +22,7 @@ import TestsPage from './components/tests/TestsPage';
 import TestPage from './components/tests/TestPage';
 import Test2Page from './components/tests/Test2Page';
 import Test3Page from './components/tests/Test3Page';
+import FormularioTestPage from './components/tests/FormularioPage';
 import papel from './components/papel';
 import UsersPage from './components/user/UsersPage';
 import EmailPage from './components/email/EmailPage';
@@ -63,6 +64,7 @@ export default () => (
     <Route path='/student/tests/estres' component={TestPage} />
     <Route path='/student/tests/millon' component={Test2Page} />
     <Route path='/student/tests/baron' component={Test3Page} />
+    <Route path='/student/tests/formulario' component={FormularioTestPage} />
     <Route path='welcomeadmin/:numero/users/list' component={AgregarPsicologosPage} />
     <Route path='/welcomeadmin/:numero/users/:userId' component={UserPage} />
     <Route path='/error' component={ErrorPage} />
